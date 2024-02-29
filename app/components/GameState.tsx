@@ -32,9 +32,10 @@ const GameState: React.FC<GameStateProps> = ({
       <MatchResultsModal 
         isOpen={showResultsModal} 
         onClose={() => handleCloseModal && handleCloseModal()} 
-        playerScores={votes}
+        votes={votes}
         competitors={competitors}
         loadNextMatch={() => {/* Implement as needed */}} 
+        matchPot={matchPot}
       />
       <Countdown onFinish={endGame} />
       <Timer onTimeEnd={endGame} startTimer={gameInProgress} />
