@@ -21,7 +21,6 @@ body,
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  overflow: hidden;
 }
 
 body {
@@ -40,10 +39,17 @@ body {
 }
 
 body {
-  position: fixed;
-  overflow: hidden;
-  overscroll-behavior-y: none;
   font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica,
     ubuntu, roboto, noto, segoe ui, arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+
+.mist {
+  color: #C59F1A;
+}
+
+.vote-button:active, .ready-button:active {
+  transform: scale(0.98); /* Slightly scale down button */
+  opacity: 0.7; /* Reduce opacity to give feedback */
 }
