@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
 interface CountdownProps {
-  onFinish: () => void; // Add this prop
+  onFinish: () => void;
 }
 
 const Countdown: React.FC<CountdownProps> = ({ onFinish }) => {
   const [seconds, setSeconds] = useState(3);
 
   useEffect(() => {
-    if (seconds > 0) {
-      const timerId = setTimeout(() => setSeconds(seconds - 1), 1000);
-      return () => clearTimeout(timerId);
-    } else {
-      onFinish(); // Call onFinish when countdown reaches 0
+    if (seconds === 0) {
+      onFinish(); // This should trigger only once when the countdown reaches 0
+      return;
     }
+    const timerId = setTimeout(() => setSeconds(seconds - 1), 1000);
+    return () => clearTimeout(timerId);
   }, [seconds, onFinish]);
 
   return (
-    <div className="flex items-center justify-center"> {/* Removed "hidden" class */}
-      <div className="text-white font-bold mb-9">
+    <div className="flex items-center justify-center">
+      <div className="text-white font-bold">
         Game starts in <span>{seconds}</span> seconds
       </div>
     </div>

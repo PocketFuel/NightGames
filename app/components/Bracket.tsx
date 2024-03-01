@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, forwardRef, Ref } from 'react';
 import BracketSlot from './BracketSlot';
+import Participants from './Participants';
 import { useCompetitor } from '../contexts/CompetitorContext';
+import Rules from './Rules';
 
-const Bracket: React.FC = () => {
+const Bracket = forwardRef<HTMLDivElement, any>((props, ref: Ref<HTMLDivElement>) => {
   const { competitors, setCurrentMatch } = useCompetitor();
 
   // Function to chunk the competitors array into pairs
@@ -26,8 +28,10 @@ const Bracket: React.FC = () => {
   }, [competitors, setCurrentMatch]);
 
   return (
-  <div className="flex flex-col max-w-8xl mx-auto">
+    <div className="flex flex-col max-w-8xl mx-auto" ref={ref}>
       <h2 className="text-white text-center font-bold text-5xl my-9 px-3 md:px-6 lg:px-12">Bracket</h2>
+      <Participants readyCount={12} totalCompetitors={competitors.length} />
+      <Rules />
       <div className="flex flex-row py-12 w-full mx-auto">
         {['Round 1', 'Round 2', 'Semi-Finals', 'Finals'].map((round, roundIndex) => (
           <div key={round} className="bracket-container flex flex-col gap-12 border-r border-night w-1/4 px-3 md:px-6 lg:px-12">
@@ -43,8 +47,8 @@ const Bracket: React.FC = () => {
           </div>
         ))}
       </div>
-  </div> 
+    </div> 
   );
-};
+});
 
 export default Bracket;

@@ -28,11 +28,3 @@ export const PotProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     </PotContext.Provider>
   );
 };
-
-export const usePot = () => {
-    const context = useContext(PotContext);
-    if (context === undefined) {
-      throw new Error('usePot must be used within a PotProvider');
-    }
-    return context;
-  };

@@ -12,9 +12,8 @@ const Card: React.FC<CardProps> = ({ rank, playerName, imgSrc, booted, tags }) =
   return (
     <label className="w-full col-span-3 lg:col-span-1 p-2 border-2 border-night bg-darknight hover:border-dusk hover:bg-night transition-all ease-in-out duration-700 active:border-mist rounded-xl relative">
       <div className="flex flex-col w-full gap-2 rounded-md relative">
-        <p className="text-lg font-bold text-black bg-night px-3 absolute top-0 right-0 mr-1 rounded-sm">No. {rank}</p>
-        <input className="absolute z-20 bottom-0 right-0 mr-2 mb-2 bg-night h-4 w-4 border-2 border-dusk text-mist active:border-mist focus:ring-mist" id={`no${rank}`} name="notification-method" type="checkbox" />
-        <img className="w-full -mr-8 -mb-2 aspect-ratio: 1/1 absolute bottom-0 right-0 z-20 sm:z-0" src={imgSrc} alt="" />
+        <p className="text-lg font-bold text-black bg-night px-3 absolute top-6 right-0 mr-1 rounded-sm">No. {rank}</p>
+        <img className="w-3/4 -mr-8 -mb-2 aspect-ratio: 1/1 absolute bottom-0 right-0 z-20 sm:z-0" src={imgSrc} alt="" />
         <div className="flex flex-col gap-2">
           <h4 className="text-sm uppercase font-bold text-day">
             {playerName}

@@ -1,38 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { usePot } from '../contexts/PotContext';
-import { useCompetitor, Competitor } from '../contexts/CompetitorContext';
+import { useCompetitor } from '../contexts/CompetitorContext';
+import { useMatch } from '../contexts/MatchContext'; // Make sure to import useMatch
 import MatchUp from './MatchUp';
+import { MatchProvider } from '../contexts/MatchContext';
 
 interface GameProps {
   setActiveMultiplier: (multiplier: number) => void;
 }
 
 const Game: React.FC<GameProps> = ({ setActiveMultiplier }) => {
-  const { currentMatch, setCurrentMatch } = useCompetitor(); // Ensure the generic type is correctly defined
+  const { competitors, setCompetitorReady } = useCompetitor();
+  const { startGame, gameInProgress, showCountdown, setShowCountdown, showResultsModal, setShowResultsModal } = useMatch(); // Use MatchContext
   const [votes, setVotes] = useState<{ [key: string]: number }>({});
-  const [gameInProgress, setGameInProgress] = useState(false);
-  const [showCountdown, setShowCountdown] = useState(false);
-  const [showResultsModal, setShowResultsModal] = useState(false);
-  const { updatePots } = usePot();
 
+  // Check if all competitors are ready and start the game
   useEffect(() => {
-  }, [currentMatch, setCurrentMatch]);
-
-  useEffect(() => {
-    if (showCountdown) {
-      const timer = setTimeout(() => {
-        if (!gameInProgress) {
-          startGame();
-        }
-      }, 3000);
-      return () => clearTimeout(timer);
+    const allReady = competitors.every(competitor => competitor.isReady);
+    if (allReady && !gameInProgress) {
+      startGame();
+      setActiveMultiplier(2); // Assuming you want to set the multiplier when the game starts
     }
-  }, [showCountdown, gameInProgress]);
+  }, [competitors, gameInProgress, startGame, setActiveMultiplier]);
 
-  const startGame = () => {
-    setGameInProgress(true);
-    setShowCountdown(false);
-    setActiveMultiplier(2); // Ensure this logic aligns with your game's rules
+  const onReady = (competitorId: string) => {
+    console.log(`Competitor ${competitorId} is ready`);
+    setCompetitorReady(competitorId);
   };
 
   const voteForCompetitor = (competitorId: string) => {
@@ -41,26 +34,20 @@ const Game: React.FC<GameProps> = ({ setActiveMultiplier }) => {
       return;
     }
     setVotes(prevVotes => {
-      const newVotes = { ...prevVotes, [competitorId]: (prevVotes[competitorId] || 0) + 1 }; // Assuming votes are incremented by 1, adjust as necessary
-      updatePots(newVotes[competitorId], 1); // Assuming this is correct, adjust the second argument as necessary
+      const newVotes = { ...prevVotes, [competitorId]: (prevVotes[competitorId] || 0) + 1 };
       return newVotes;
     });
   };
 
-  const loadNextMatch = () => {
-    console.log("Loading next match...");
-    // Implement logic to fetch and set the next match
-  };
-
-  if (!currentMatch) return <div className='text-white font-bold mb-9'>Loading match...</div>;
-
+  if (!competitors.length) return <div className='text-white font-bold mb-9'>Loading match...</div>;
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <MatchProvider>
       <div className="flex flex-col items-center gap-6">
         <MatchUp />
+        {/* Include any other components or elements related to the game here */}
       </div>
-    </div>
+    </MatchProvider>
   );
 };
 

@@ -17,6 +17,7 @@ const config: Config = {
         'mist': '#C59F1A;',
         'day': '#ffffff',
         'white': '#ffffff',
+        'green':'#4C621D',
       },
     },
   },

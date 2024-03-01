@@ -1,4 +1,5 @@
 'use client'
+import React, { useRef } from 'react';
 import { Loader } from '@react-three/drei'
 import { Toaster } from 'sonner'
 import Background from './components/Background'
@@ -6,15 +7,12 @@ import StickyHeader from './components/StickyHeader'
 import Socials from './components/Socials'
 import Leaderboard from './components/Leaderboard'
 import Footer from './components/Footer'
-import TipSection from './components/TipSection'
 import CompetitorList from './components/CompetitorList'
 import Game from './components/Game'
-import Match from './components/Match'
-import Rules from './components/Rules'
-import Pots from './components/Pots'
 import Bracket from './components/Bracket'
 import Add from './components/Add'
-import { CompetitorProvider } from './contexts/CompetitorContext';
+import { CompetitorProvider } from './contexts/CompetitorContext'
+import { MatchProvider } from './contexts/MatchContext'
 
 const players = [
   {
@@ -49,23 +47,21 @@ const players = [
 export default function Home() {
   return (
     <CompetitorProvider>
-    <div className='bg-black'>
-      <Background />
-      <StickyHeader />
-      <Leaderboard players={players} />
-      <Rules />
-      <Add />
-      <CompetitorList />
-      <Bracket />
-      <Pots />
-      <Match />
-      <Game setActiveMultiplier={() => {}} />
-      <TipSection setActiveMultiplier={() => {}} />
-      <Footer />
-      <Toaster position='bottom-left' richColors />
-      <Socials />
-      <Loader />
-    </div>
+      <MatchProvider>
+        <div className='bg-black'>
+          <Background />
+          <StickyHeader />
+          <Leaderboard players={players} />
+          <Add />
+          <CompetitorList />
+          <Bracket />
+          <Game setActiveMultiplier={() => {}} />
+          <Footer />
+          <Toaster position='bottom-left' richColors />
+          <Socials />
+          <Loader />
+        </div>
+      </MatchProvider>
     </CompetitorProvider>
-  )
-}
+  );
+};

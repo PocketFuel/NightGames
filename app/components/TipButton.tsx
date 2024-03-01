@@ -9,11 +9,7 @@ interface TipButtonProps {
 
 const TipButton: React.FC<TipButtonProps> = ({ id, multiplier, buttonText, setPointMultiplier }) => {
   return (
-    <button 
-      id={id} 
-      className="vote-modifier w-full gap-3 bg-eclipse rounded-xl border-2 border-night py-3 px-4 hover:border-dusk active:border-mist focus:border-mist transition-all ease-in-ease-out duration-700" 
-      onClick={() => setPointMultiplier(multiplier, id)}
-    >
+    <button onClick={() => setPointMultiplier(multiplier, id)} className="vote-modifier w-full gap-3 bg-eclipse rounded-xl border-2 border-night py-3 px-4 hover:border-dusk active:border-mist focus:border-mist transition-all ease-in-ease-out duration-700">
       <p className="text-white">{buttonText}</p>
       <h2 className="font-bold text-3xl text-white">{multiplier}</h2>
       <p className="text-white">$RAIN</p>

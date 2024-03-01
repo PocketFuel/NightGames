@@ -19,7 +19,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ players }) => {
       {players.map((player) => (
         <Card key={player.rank} {...player} />
       ))}
-      <p className="w-full col-span-3 text-center font-bold text-mist text-2xl">Hold mini tournaments with your friends. Add them on the spot or use real NFTs.</p>
+      <p className="w-full col-span-3 text-center font-bold text-mist mt-3 text-2xl">Hold mini tournaments with your friends. Add them on the spot or use real NFTs.</p>
     </section>
   );
 };

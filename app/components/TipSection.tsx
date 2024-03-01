@@ -20,9 +20,9 @@ const TipSection: React.FC<{setActiveMultiplier: (multiplier: number) => void}> 
   };
 
   return (
-    <section className="flex flex-col items-center">
-      <p className="w-full max-w-5xl col-span-3 py-3 text-center font-bold text-white text-xl force-visible">Wanna increase your click size?</p>  
-      <div id="vote-modifiers" className="w-full max-w-5xl grid grid-cols-4 col-span-3 gap-2 md:gap-3 mb-3 bg-darkestnight">
+    <section className="flex flex-col items-center w-full">
+      <p className="w-full col-span-3 py-3 text-center font-bold text-white text-xl force-visible mb-3">Wanna increase your click size?</p>  
+      <div id="vote-modifiers" className="w-full grid grid-cols-4 col-span-3 gap-2 md:gap-3 mb-3 bg-darkestnight">
         {buttonConfigs.map((config) => (
           <TipButton key={config.id} {...config} setPointMultiplier={setPointMultiplier} />
         ))}

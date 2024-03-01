@@ -1,5 +1,17 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
+// Define the types for your context
+interface Competitor {
+  id: string;
+  name: string;
+  imgSrc: string;
+  status?: CompetitorStatus;
+  isReady?: boolean;
+  booted?: boolean;
+  votes?: number;
+  rank?: number;
+}
+
 export interface CompetitorProps {
   id: string;
   name: string;
@@ -19,20 +31,6 @@ export enum CompetitorStatus {
   Third = 'Third',
 }
 
-export interface Competitor {
-  id: string;
-  name: string;
-  imgSrc: string;
-  status?: CompetitorStatus;
-  // Add any other fields that are common across your components
-}
-
-interface CurrentMatchType {
-  matchPot: number;
-  competitors: Competitor[]; // Assuming you have a Competitor type defined
-  // Include other properties as needed
-}
-
 interface TournamentMatch {
   id: string;
   competitors: Competitor[];
@@ -44,24 +42,27 @@ interface CompetitorContextType {
   setCurrentMatch: (match: TournamentMatch | null) => void;
   addCompetitor: (competitor: Competitor) => void;
   removeCompetitor: (id: string) => void;
+  setCompetitorReady: (competitorId: string) => void;
 }
 
+// Create the context
 const CompetitorContext = createContext<CompetitorContextType | undefined>(undefined);
 
+// Provide the context
 export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentMatch, setCurrentMatch] = useState<TournamentMatch | null>(null);
-    const [competitors, setCompetitors] = useState<Competitor[]>(() => {
-    // Initialize state with competitors from local storage
+  const [competitors, setCompetitors] = useState<Competitor[]>(() => {
     const localData = localStorage.getItem('competitors');
-    return localData ? JSON.parse(localData) : [];
+    let initialCompetitors: Competitor[] = localData ? JSON.parse(localData) : [];
+    // Ensure isReady is set to false for each competitor initially
+    initialCompetitors = initialCompetitors.map(competitor => ({ ...competitor, isReady: false }));
+    return initialCompetitors;
   });
 
   useEffect(() => {
-    // Debounce saving to local storage to avoid excessive writes
     const handler = setTimeout(() => {
       localStorage.setItem('competitors', JSON.stringify(competitors));
     }, 500);
-  
     return () => clearTimeout(handler);
   }, [competitors]);
 
@@ -74,20 +75,29 @@ export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       });
     } catch (error) {
       console.error("Error adding competitor:", error);
-      // Handle the error appropriately, possibly notifying the user
     }
   };
 
   const removeCompetitor = (id: string) => {
     setCompetitors(prevCompetitors => prevCompetitors.filter(competitor => competitor.id !== id));
   };
+
+  const setCompetitorReady = (competitorId: string) => {
+    setCompetitors(prevCompetitors =>
+      prevCompetitors.map(competitor =>
+        competitor.id === competitorId ? { ...competitor, isReady: true } : competitor
+      )
+    );
+  };
+
   const value = useMemo(() => ({
     competitors, 
     currentMatch, 
     setCurrentMatch, 
     addCompetitor, 
-    removeCompetitor
-  }), [competitors, currentMatch]);
+    removeCompetitor,
+    setCompetitorReady,
+  }), [competitors, currentMatch, setCompetitorReady]);
 
   return (
     <CompetitorContext.Provider value={value}>
@@ -96,6 +106,7 @@ export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   );
 };
 
+// Hook to use the context
 export const useCompetitor = () => {
   const context = useContext(CompetitorContext);
   if (context === undefined) {
