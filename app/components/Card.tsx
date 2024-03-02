@@ -4,27 +4,17 @@ interface CardProps {
   rank: number;
   playerName: string;
   imgSrc: string;
-  booted: boolean;
-  tags: string[];
 }
 
-const Card: React.FC<CardProps> = ({ rank, playerName, imgSrc, booted, tags }) => {
+const Card: React.FC<CardProps> = ({ rank, playerName, imgSrc }) => {
   return (
     <label className="w-full col-span-3 lg:col-span-1 p-2 border-2 border-night bg-darknight hover:border-dusk hover:bg-night transition-all ease-in-out duration-700 active:border-mist rounded-xl relative">
       <div className="flex flex-col w-full gap-2 rounded-md relative">
-        <p className="text-lg font-bold text-black bg-night px-3 absolute top-6 right-0 mr-1 rounded-sm">No. {rank}</p>
-        <img className="w-3/4 -mr-8 -mb-2 aspect-ratio: 1/1 absolute bottom-0 right-0 z-20 sm:z-0" src={imgSrc} alt="" />
-        <div className="flex flex-col gap-2">
-          <h4 className="text-sm uppercase font-bold text-day">
+        <p className="text-lg font-bold text-white bg-night px-3 absolute top-2 right-1 mr-1 rounded-md">No. {rank}</p>
+        <img className="object-fit -mr-8 -mb-2 aspect-ratio: 1/1 rounded-md" src={imgSrc} alt="" />
+        <div className="flex flex-col gap-2 absolute z-10 bottom-3 left-3">
+          <h4 className="text-lg uppercase font-bold text-white">
             {playerName}
-          </h4>
-          <div className="flex flex-col gap-1.5 py-6 justify-start items-start">
-            {tags.map((tag, index) => (
-              <p key={index} className="uppercase font-bold text-xs text-darknight bg-mist px-1.5 rounded-full">{tag}</p>
-            ))}
-          </div>
-          <h4 className="text-xs uppercase font-bold text-dusk">
-            Booted: {booted ? 'True' : 'False'}
           </h4>
         </div>
       </div>

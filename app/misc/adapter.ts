@@ -6,8 +6,8 @@ export const getAdapter = async (persisted = true) => {
   _adapter = await NightlyConnectAdapter.build(
     {
       appMetadata: {
-        name: 'Solana Template',
-        description: 'Solana Template',
+        name: 'Smash or Trash',
+        description: 'Smash or Trash',
         icon: 'https://docs.nightly.app/img/logo.png',
       },
     },

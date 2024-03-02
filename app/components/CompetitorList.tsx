@@ -7,7 +7,7 @@ const CompetitorList: React.FC = () => {
   const { competitors, removeCompetitor } = useCompetitor();
   
   return (
-    <div className="w-full max-w-6xl mx-auto my-12">
+    <div className="w-full max-w-5xl mx-auto my-12">
       <h2 className="text-white font-bold text-3xl mb-6">Competitors</h2>
       <div className='grid grid-cols-6 gap-3'>
         {competitors.map((competitor) => (

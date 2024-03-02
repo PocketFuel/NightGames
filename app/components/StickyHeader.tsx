@@ -4,8 +4,8 @@ import React, { useEffect } from 'react'
 import { toast } from 'sonner'
 import { getAdapter } from '../misc/adapter'
 import { getSolana } from '../misc/solana'
-import ActionStarryButton from './ActionStarryButton'
-import StarryButton from './StarryButton'
+import ActionConnectButton from './ActionConnectButton'
+import ConnectButton from './ConnectButton'
 
 const StickyHeader: React.FC = () => {
   const [publicKey, setPublicKey] = React.useState<string | undefined>()
@@ -43,7 +43,7 @@ const StickyHeader: React.FC = () => {
           /> */}
         </div>
         <div className='flex flex-col space-y-4'>
-          <StarryButton
+          <ConnectButton
             connected={publicKey !== undefined}
             onConnect={async () => {
               const adapter = await getAdapter()
@@ -71,7 +71,7 @@ const StickyHeader: React.FC = () => {
           />
           {publicKey && (
             <>
-              <ActionStarryButton
+              <ActionConnectButton
                 onClick={async () => {
                   const signTransaction = async () => {
                     const solana = await getSolana()
@@ -106,8 +106,8 @@ const StickyHeader: React.FC = () => {
                   })
                 }}
                 name='Sign Transaction'
-              ></ActionStarryButton>
-              <ActionStarryButton
+              ></ActionConnectButton>
+              <ActionConnectButton
                 onClick={async () => {
                   const signMessage = async () => {
                     const adapter = await getAdapter()
@@ -122,7 +122,7 @@ const StickyHeader: React.FC = () => {
                   })
                 }}
                 name='Sign Message'
-              ></ActionStarryButton>
+              ></ActionConnectButton>
             </>
           )}
         </div>

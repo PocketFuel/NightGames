@@ -13,36 +13,7 @@ import Bracket from './components/Bracket'
 import Add from './components/Add'
 import { CompetitorProvider } from './contexts/CompetitorContext'
 import { MatchProvider } from './contexts/MatchContext'
-
-const players = [
-  {
-    rank: 1,
-    playerName: 'Pit the Panda',
-    id: '1',
-    name: 'DTP #1453',
-    imgSrc: 'pit.png',
-    booted: false,
-    tags: ['Genesis', 'OG'],
-  },
-  {
-    rank: 2,
-    playerName: 'Vipr the Panda',
-    id: '2',
-    name: 'DTP #1454',
-    imgSrc: 'vipr.png',
-    booted: false,
-    tags: ['Genesis', 'OG'],
-  },
-  {
-    rank: 3,
-    playerName: 'Monterrey Rice',
-    id: '3',
-    name: 'DTP #1455',
-    imgSrc: 'monterrey.png',
-    booted: true,
-    tags: ['Genesis', 'OG'],
-  },
-];
+import FullLeaderboard from './components/FullLeaderboard'
 
 export default function Home() {
   return (
@@ -51,7 +22,8 @@ export default function Home() {
         <div className='bg-black'>
           <Background />
           <StickyHeader />
-          <Leaderboard players={players} />
+          <Leaderboard />
+          <FullLeaderboard />
           <Add />
           <CompetitorList />
           <Bracket />

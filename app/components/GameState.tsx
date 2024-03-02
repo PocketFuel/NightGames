@@ -38,7 +38,7 @@ const GameState: React.FC<GameStateProps> = ({
         matchPot={matchPot}
       />
       <Countdown onFinish={endGame} />
-      <Timer onTimeEnd={endGame} startTimer={gameInProgress} />
+      <Timer onTimeEnd={endGame} startTimer={gameInProgress} countdownComplete={true} />    
     </div>
   );
 };

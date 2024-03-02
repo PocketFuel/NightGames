@@ -1,0 +1,18 @@
+.stars-bg {
+  background-size: cover;
+  background-position: 0 0;
+  background-color: goldenrod;
+}
+
+@keyframes move-stars {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 578px 578px;
+  }
+}
+
+.animate-move-stars {
+  animation: move-stars 10s linear infinite;
+}

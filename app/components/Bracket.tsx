@@ -32,7 +32,7 @@ const Bracket = forwardRef<HTMLDivElement, any>((props, ref: Ref<HTMLDivElement>
       <h2 className="text-white text-center font-bold text-5xl my-9 px-3 md:px-6 lg:px-12">Bracket</h2>
       <Participants readyCount={12} totalCompetitors={competitors.length} />
       <Rules />
-      <div className="flex flex-row py-12 w-full mx-auto">
+      <div className="flex flex-row py-12 w-full max-w-7xl mx-auto">
         {['Round 1', 'Round 2', 'Semi-Finals', 'Finals'].map((round, roundIndex) => (
           <div key={round} className="bracket-container flex flex-col gap-12 border-r border-night w-1/4 px-3 md:px-6 lg:px-12">
             <div className="round-title font-bold text-mist text-2xl">{round}</div>

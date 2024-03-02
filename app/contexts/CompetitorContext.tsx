@@ -56,6 +56,10 @@ export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     let initialCompetitors: Competitor[] = localData ? JSON.parse(localData) : [];
     // Ensure isReady is set to false for each competitor initially
     initialCompetitors = initialCompetitors.map(competitor => ({ ...competitor, isReady: false }));
+    // Assign ranks here if initialCompetitors were just initialized and not loaded from localStorage
+    if (!localData) {
+      initialCompetitors = assignRanks(initialCompetitors);
+    }
     return initialCompetitors;
   });
 
@@ -65,18 +69,6 @@ export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }, 500);
     return () => clearTimeout(handler);
   }, [competitors]);
-
-  const addCompetitor = (newCompetitor: Competitor) => {
-    try {
-      setCompetitors(prevCompetitors => {
-        const updatedCompetitors = [...prevCompetitors, newCompetitor];
-        localStorage.setItem('competitors', JSON.stringify(updatedCompetitors));
-        return updatedCompetitors;
-      });
-    } catch (error) {
-      console.error("Error adding competitor:", error);
-    }
-  };
 
   const removeCompetitor = (id: string) => {
     setCompetitors(prevCompetitors => prevCompetitors.filter(competitor => competitor.id !== id));
@@ -90,14 +82,50 @@ export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     );
   };
 
+  // Moved inside the CompetitorProvider component
+  const calculateAndAssignRanks = () => {
+    setCompetitors(prevCompetitors => {
+      const competitorsWithRanks = prevCompetitors
+        .map(competitor => ({
+          ...competitor,
+          rank: Math.floor(Math.random() * 12) + 1, // Example rank assignment logic
+        }))
+        .sort((a, b) => a.rank - b.rank);
+      return competitorsWithRanks;
+    });
+  };
+
+  // Use effect to call calculateAndAssignRanks
+  const assignRanks = (competitors: Competitor[]) => {
+    return competitors.map(competitor => ({
+      ...competitor,
+      rank: Math.floor(Math.random() * 12) + 1,
+    })).sort((a, b) => a.rank - b.rank);
+  };
+
+  // Adjusted useEffect for localStorage
+  useEffect(() => {
+    localStorage.setItem('competitors', JSON.stringify(competitors));
+  }, [competitors]);
+
+  const addCompetitor = (newCompetitor: Competitor) => {
+    setCompetitors(prevCompetitors => {
+      const highestRank = prevCompetitors.reduce((max, competitor) => competitor.rank && competitor.rank > max ? competitor.rank : max, 0);
+      const updatedCompetitor = { ...newCompetitor, rank: highestRank + 1 };
+      const updatedCompetitors = [...prevCompetitors, updatedCompetitor].sort((a, b) => (a.rank ? a.rank : 0) - (b.rank ? b.rank : 0));
+      localStorage.setItem('competitors', JSON.stringify(updatedCompetitors));
+      return updatedCompetitors;
+    });
+  };
+
   const value = useMemo(() => ({
-    competitors, 
-    currentMatch, 
-    setCurrentMatch, 
-    addCompetitor, 
+    competitors,
+    currentMatch,
+    setCurrentMatch,
+    addCompetitor,
     removeCompetitor,
     setCompetitorReady,
-  }), [competitors, currentMatch, setCompetitorReady]);
+  }), [competitors, currentMatch]);
 
   return (
     <CompetitorContext.Provider value={value}>

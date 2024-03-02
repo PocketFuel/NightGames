@@ -17,7 +17,7 @@ const Countdown: React.FC<CountdownProps> = ({ onFinish }) => {
   }, [seconds, onFinish]);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 border border-night z-20 flex items-center justify-center">
       <div className="text-white font-bold">
         Game starts in <span>{seconds}</span> seconds
       </div>
