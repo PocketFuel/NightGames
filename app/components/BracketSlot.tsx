@@ -12,7 +12,7 @@ const BracketSlot: React.FC<BracketSlotProps> = ({ competitorIds }) => {
   const slotCompetitors = competitors.filter(competitor => competitorIds.includes(competitor.id));
 
   return (
-    <div className="bracket-slot border-l-4 border-night border-b border-night flex-col gap-3 pl-4"> {/* Adjusted line */}
+    <div className="bracket-slot border-l-4 border-night border-b border-night flex-col gap-3"> {/* Adjusted line */}
       {slotCompetitors.map(competitor => (
         <SmallCompetitor 
           key={competitor.id} 

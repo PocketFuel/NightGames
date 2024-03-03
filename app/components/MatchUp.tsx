@@ -8,9 +8,10 @@ import { useMatch } from '../contexts/MatchContext';
 
 const MatchUp: React.FC = () => {
   const { competitors, setCompetitorReady } = useCompetitor();
-  const [matchPot, setMatchPot] = React.useState<number>(0); // Example initialization
+  const [matchPot, setMatchPot] = React.useState<number>(0); 
   const [activeMultiplier, setActiveMultiplier] = React.useState<number>(1);
-  const [votingEnabled, setVotingEnabled] = React.useState<boolean>(true); // Added state for votingEnabled
+  const [votingEnabled, setVotingEnabled] = React.useState<boolean>(true); 
+  const { incrementVotes } = useCompetitor(); 
 
   return (
     <div className="flex flex-col items-center max-w-5xl">
@@ -23,19 +24,19 @@ const MatchUp: React.FC = () => {
       <div>
         <MatchPot matchPot={matchPot} />
       </div>
-      <div className="grid grid-cols-2 gap-6 my-8 justify-center">
+      <div className="grid grid-cols-2 gap-2 justify-center">
         {competitors.slice(0, 2).map((competitor) => (
           <Competitor
             onReady={() => setCompetitorReady(competitor.id)}
-            votingEnabled={votingEnabled}
             key={competitor.id}
             {...competitor}
-            isReady={competitor.isReady || false} // Ensure isReady is always a boolean
             votes={Number(competitor.votes) || 0}
             rank={Number(competitor.rank) || 0}
             booted={competitor.booted || false}
             voteForCompetitor={() => {}} 
             readyUpCompetitor={() => {}}
+            isReady={competitor.isReady || false}
+            votingEnabled={votingEnabled}
           />
         ))}
       </div>

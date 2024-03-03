@@ -1,8 +1,8 @@
 {
-  "name": "solana-web3-template",
+  "name": "smash-or-trash",
   "version": "0.1.0",
-  "description": "Template for Solana Web3 Apps",
-  "author": "Nightly Labs",
+  "description": "The NFT Tournament solution on Solana.",
+  "author": "CrayonDAOO",
   "license": "MIT",
   "private": false,
   "scripts": {

@@ -1,0 +1,27 @@
+Core issues:
+
+Competitors able to "Ready up" but the COuntdown.tsx component does not appear on top of the screen as a modal .
+
+After the Countdown.tsx component completes its function the Timer.tsx component should begin.
+
+During this 30 sec Timer, Spectators can vote by clicking on the Competitor they think has the cooler image.
+
+Voters can add multipliers to their clicks or Space bar taps by using the TipsSection.tsx component that contains 8 TipButton.tsx components with various different IDs.
+
+When a Game ties the Countdown.tsx component would come up again and the Timer.tsx component would stat again but there would only be 10 sec on the Timer.tsx this time. 
+
+When a Game or Match i often use these terms interchangeablly, completes, the MatchReultsModal.tsx should pop up displaying bother Competitors votes. 
+
+In our game there are two modes. Casual and Ranked. In Casual you can simply upload images and text. In Ranked you can use real NFTs and SPL tokens in place of votes.
+
+Once I can finally start and resolve a Game the using MatchUp.tsx and Game.tsx plus MatchContext,tsx and CompetitorContext.tsx I will be able to move on to the next step of the project.
+
+THe next step is resolving multiple games and moving the winners along the Bracket.tsx component out of their repsective BracketSlot.tsx components and into new BracketSlot.tsx components with the winners from other respective games. 
+
+Once I have a full Tournament flow the goal will be to run multiple tournaments simultaneously.
+
+Before that though I'll need to create structure and layout for handling Causal and Ranked game modes using Metaplex and SPL token library. In Ranked game modes, at the end of the voting, I want to submit the total number as a single digitl integer of an SPL token called RAIN. 
+
+For instance if I vote 100 times for a Competitor at the end of the Match I'll be expected to approve a tx of 100 RAIN to the Pot. 
+
+

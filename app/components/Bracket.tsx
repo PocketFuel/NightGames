@@ -33,9 +33,9 @@ const Bracket = forwardRef<HTMLDivElement, any>((props, ref: Ref<HTMLDivElement>
       <Participants readyCount={12} totalCompetitors={competitors.length} />
       <Rules />
       <div className="flex flex-row py-12 w-full max-w-7xl mx-auto">
-        {['Round 1', 'Round 2', 'Semi-Finals', 'Finals'].map((round, roundIndex) => (
-          <div key={round} className="bracket-container flex flex-col gap-12 border-r border-night w-1/4 px-3 md:px-6 lg:px-12">
-            <div className="round-title font-bold text-mist text-2xl">{round}</div>
+        {['Round 1', 'Round 2', 'Round 3', 'Finals'].map((round, roundIndex) => (
+          <div key={round} className="bracket-container flex flex-col gap-12 border-r border-night w-1/4 px-1 md:px-6 lg:px-12">
+            <div className="round-title font-bold text-mist text-xl">{round}</div>
             <div className="bracket-slots flex flex-col gap-4">
               {roundIndex === 0 && competitorPairs.map((pair, index) => (
                 <div key={index} className="bracket-slot-wrapper">

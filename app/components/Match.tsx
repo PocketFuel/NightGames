@@ -5,22 +5,20 @@ import { useMatch } from '../contexts/MatchContext';
 import { useCompetitor } from '../contexts/CompetitorContext';
 
 const Match = () => {
-  const { gameInProgress, startGame } = useMatch();
+  const { gameInProgress, startGame, showCountdown, setShowCountdown } = useMatch();
   const { competitors } = useCompetitor();
-  const [showCountdown, setShowCountdown] = useState<boolean>(false);
-  const [startTimer, setStartTimer] = useState<boolean>(false);
 
   useEffect(() => {
     const allReady = competitors.every(competitor => competitor.isReady);
-    setShowCountdown(allReady);
     if (allReady) {
-      startGame(); // This should ideally set `gameInProgress` to true
+      setShowCountdown(true);
     }
-  }, [competitors, startGame]);
+  }, [competitors, setShowCountdown]);
 
   const handleCountdownFinish = () => {
-    setShowCountdown(false);
-    setStartTimer(true); // Start the timer after countdown
+    startGame();
+    // If you're using the global state for the countdown, you don't need to manage a local startTimer state.
+    // setStartTimer(true); // Remove this if not used
   };
 
   // Example function to call when a match ends
@@ -39,12 +37,9 @@ const Match = () => {
             <span className="font-semibold text-3xl text-mist">vs</span>
             <span id="p2" className="font-semibold text-3xl text-white">Player 2</span>
         </div>
-        {showCountdown && (
         <div className="bg-black text-white bg-opacity-50 flex justify-center items-center">
-          <Countdown onFinish={handleCountdownFinish} />
-        </div>
-      )}
-        {gameInProgress && startTimer && <Timer onTimeEnd={onMatchEnd} startTimer={startTimer} countdownComplete={!showCountdown} />}    
+        {showCountdown && <Countdown onFinish={handleCountdownFinish} />}
+        {gameInProgress && <Timer onTimeEnd={onMatchEnd} startTimer={true} countdownComplete={!showCountdown} />}          </div>
     </section>
     </>
   );

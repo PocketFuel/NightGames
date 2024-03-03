@@ -5,23 +5,23 @@ import Head from 'next/head'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Solana Template App',
+  title: 'Smash? Or Trash!',
   description:
-    'Start your Solana journey here, without unnecessary configuration and setup. Just clone it and code on top of it. Powered by Nightly Wallet.',
+    'A Smash or Pass style NFT Tournament solution on Solana. Play casual and just upload images and vote for fun or vote for NFTs using SPL tokens in place of WAX (Offchain points system powered by DLI). Smash or Trash is the brainchild of DTP Legend NFT Onward and was designed and built probono by CrayHans, the founder of CrayonDAOO.',
   twitter: {
-    title: 'Solana Template App',
+    title: 'Smash? Or Trash!',
     description:
-      'Start your Solana journey here, without unnecessary configuration and setup. Just clone it and code on top of it. Powered by Nightly Wallet.',
+    'A Smash or Pass style NFT Tournament solution on Solana. Play casual and just upload images and vote for fun or vote for NFTs using SPL tokens in place of WAX (Offchain points system powered by DLI). Smash or Trash is the brainchild of DTP Legend NFT Onward and was designed and built probono by CrayHans, the founder of CrayonDAOO.',
     images: 'https://solana-web3-template.nightly.app/preview.png',
     card: 'summary_large_image',
     site: '@nightly_app',
   },
   openGraph: {
-    title: 'Solana Template App',
+    title: 'Smash? Or Trash!',
     description:
-      'Start your Solana journey here, without unnecessary configuration and setup. Just clone it and code on top of it. Powered by Nightly Wallet.',
+    'A Smash or Pass style NFT Tournament solution on Solana. Play casual and just upload images and vote for fun or vote for NFTs using SPL tokens in place of WAX (Offchain points system powered by DLI). Smash or Trash is the brainchild of DTP Legend NFT Onward and was designed and built probono by CrayHans, the founder of CrayonDAOO.',
     images: 'https://solana-web3-template.nightly.app/preview.png',
-    url: 'https://solana-web3-template.nightly.app',
+    url: 'https://smashtrash.xyz',
     type: 'website',
   },
 }

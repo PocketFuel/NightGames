@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { usePot } from '../contexts/PotContext';
 import { useCompetitor } from '../contexts/CompetitorContext';
 import { useMatch } from '../contexts/MatchContext'; // Make sure to import useMatch
 import MatchUp from './MatchUp';
-import { MatchProvider } from '../contexts/MatchContext';
+import Countdown from './Countdown';
+import Timer from './Timer';
+import MatchResultsModal from './MatchResultsModal';
 
 interface GameProps {
   setActiveMultiplier: (multiplier: number) => void;
@@ -11,22 +12,31 @@ interface GameProps {
 
 const Game: React.FC<GameProps> = ({ setActiveMultiplier }) => {
   const { competitors, setCompetitorReady } = useCompetitor();
-  const { startGame, gameInProgress, showCountdown, setShowCountdown, showResultsModal, setShowResultsModal } = useMatch(); // Use MatchContext
+  const { startGame, gameInProgress, showCountdown, setShowCountdown, showMatchResultsModal, setShowMatchResultsModal } = useMatch(); // Use MatchContext
   const [votes, setVotes] = useState<{ [key: string]: number }>({});
 
   // Check if all competitors are ready and start the game
   useEffect(() => {
     const allReady = competitors.every(competitor => competitor.isReady);
-    if (allReady && !gameInProgress) {
+    if (allReady && !gameInProgress&& !showCountdown) {
+      setShowCountdown(true);
       startGame();
       setActiveMultiplier(2); // Assuming you want to set the multiplier when the game starts
     }
-  }, [competitors, gameInProgress, startGame, setActiveMultiplier]);
+  }, [competitors, gameInProgress, showCountdown, startGame, setShowCountdown, setActiveMultiplier]);
 
   const onReady = (competitorId: string) => {
     console.log(`Competitor ${competitorId} is ready`);
     setCompetitorReady(competitorId);
   };
+  const handleCountdownFinish = () => {
+    setShowCountdown(false);
+    startGame(); // This should also handle setting `gameInProgress` to true.
+  };
+
+  const handleMatchResultsModal = () => {
+    setShowMatchResultsModal(true);
+  }
 
   const voteForCompetitor = (competitorId: string) => {
     if (!gameInProgress) {
@@ -42,12 +52,13 @@ const Game: React.FC<GameProps> = ({ setActiveMultiplier }) => {
   if (!competitors.length) return <div className='text-white font-bold mb-9'>Loading match...</div>;
 
   return (
-    <MatchProvider>
-      <div className="flex flex-col items-center gap-6">
-        <MatchUp />
-        {/* Include any other components or elements related to the game here */}
-      </div>
-    </MatchProvider>
+    <div className="flex flex-col items-center gap-6">
+      {showCountdown && <Countdown onFinish={handleCountdownFinish} />}
+      {gameInProgress && <Timer onTimeEnd={() => {handleMatchResultsModal()}} startTimer={true} countdownComplete={true} />}
+      <MatchUp />
+      <MatchResultsModal isOpen={showMatchResultsModal} onClose={handleMatchResultsModal} competitors={competitors} loadNextMatch={() => {}} matchPot={0} votes={{}} />
+      {/* Include any other components or elements related to the game here */}
+    </div>
   );
 };
 

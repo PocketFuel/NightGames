@@ -23,6 +23,13 @@ export interface CompetitorProps {
   onReady: (id: string) => void;
 }
 
+export type CompetitorType = {
+  // Define the properties of CompetitorType here
+  id: string | number;
+  isReady: boolean;
+  // Add other properties as needed
+};
+
 export enum CompetitorStatus {
   Winner = 'Winner',
   Loser = 'Loser',
@@ -43,25 +50,52 @@ interface CompetitorContextType {
   addCompetitor: (competitor: Competitor) => void;
   removeCompetitor: (id: string) => void;
   setCompetitorReady: (competitorId: string) => void;
+  incrementVotes: (competitorId: string, multiplier: number) => void;
 }
 
+const defaultContextValue: CompetitorContextType = {
+  competitors: [], // Assuming an empty array as default
+  currentMatch: null,
+  setCurrentMatch: () => {},
+  addCompetitor: () => {},
+  removeCompetitor: () => {},
+  setCompetitorReady: () => {},
+  incrementVotes: () => {}, // Add this line
+};
 // Create the context
-const CompetitorContext = createContext<CompetitorContextType | undefined>(undefined);
+const CompetitorContext = createContext<CompetitorContextType | undefined>(defaultContextValue);
+
+const assignRanks = (competitors: Competitor[]) => {
+  return competitors.map(competitor => ({
+    ...competitor,
+    rank: Math.floor(Math.random() * 12) + 1,
+  })).sort((a, b) => a.rank - b.rank);
+};
 
 // Provide the context
 export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentMatch, setCurrentMatch] = useState<TournamentMatch | null>(null);
   const [competitors, setCompetitors] = useState<Competitor[]>(() => {
     const localData = localStorage.getItem('competitors');
-    let initialCompetitors: Competitor[] = localData ? JSON.parse(localData) : [];
-    // Ensure isReady is set to false for each competitor initially
-    initialCompetitors = initialCompetitors.map(competitor => ({ ...competitor, isReady: false }));
-    // Assign ranks here if initialCompetitors were just initialized and not loaded from localStorage
-    if (!localData) {
-      initialCompetitors = assignRanks(initialCompetitors);
+    let initialCompetitors: Competitor[] = [];
+    if (localData) {
+      try {
+        initialCompetitors = JSON.parse(localData);
+        // Ensure each competitor has isReady set to false
+        initialCompetitors = initialCompetitors.map(competitor => ({ ...competitor, isReady: false }));
+      } catch (error) {
+        console.error("Error parsing competitors from localStorage:", error);
+        // Handle error or set initialCompetitors to a default value
+      }
     }
-    return initialCompetitors;
-  });
+  
+  if (!localData || initialCompetitors.length === 0) {
+    initialCompetitors = assignRanks(initialCompetitors);
+  }
+  return initialCompetitors;
+});
+
+
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -95,14 +129,6 @@ export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     });
   };
 
-  // Use effect to call calculateAndAssignRanks
-  const assignRanks = (competitors: Competitor[]) => {
-    return competitors.map(competitor => ({
-      ...competitor,
-      rank: Math.floor(Math.random() * 12) + 1,
-    })).sort((a, b) => a.rank - b.rank);
-  };
-
   // Adjusted useEffect for localStorage
   useEffect(() => {
     localStorage.setItem('competitors', JSON.stringify(competitors));
@@ -118,6 +144,14 @@ export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     });
   };
 
+  const incrementVotes = (competitorId: string, multiplier: number = 1) => {
+    setCompetitors(prevCompetitors =>
+      prevCompetitors.map(competitor =>
+        competitor.id === competitorId ? { ...competitor, votes: (competitor.votes || 0) + multiplier } : competitor
+      )
+    );
+  };
+
   const value = useMemo(() => ({
     competitors,
     currentMatch,
@@ -125,16 +159,17 @@ export const CompetitorProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     addCompetitor,
     removeCompetitor,
     setCompetitorReady,
-  }), [competitors, currentMatch]);
+    incrementVotes, 
+  }), [competitors, currentMatch, incrementVotes, setCompetitorReady]);
 
   return (
-    <CompetitorContext.Provider value={value}>
+    <CompetitorContext.Provider value={{ ...value, incrementVotes }}>
       {children}
     </CompetitorContext.Provider>
   );
 };
 
-// Hook to use the context
+// Define the hook for consuming the context
 export const useCompetitor = () => {
   const context = useContext(CompetitorContext);
   if (context === undefined) {

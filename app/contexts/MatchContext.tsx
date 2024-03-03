@@ -6,32 +6,59 @@ interface MatchContextType {
   endGame: () => void;
   showCountdown: boolean;
   setShowCountdown: (show: boolean) => void;
-  showResultsModal: boolean;
-  setShowResultsModal: (show: boolean) => void;
+  showMatchResultsModal: boolean;
+  setShowMatchResultsModal: (show: boolean) => void;
+  // Example addition: Timer state
+  timer: number; // Assuming timer is a countdown in seconds
+  setTimer: (time: number) => void;
 }
 
-const MatchContext = createContext<MatchContextType | undefined>(undefined);
+const defaultState: MatchContextType = {
+  gameInProgress: false,
+  startGame: () => {},
+  endGame: () => {},
+  showCountdown: false,
+  setShowCountdown: () => {},
+  showMatchResultsModal: false,
+  setShowMatchResultsModal: () => {},
+  // Initialize timer state
+  timer: 30, // Default or initial timer value
+  setTimer: () => {},
+};
+
+const MatchContext = createContext<MatchContextType>(defaultState);
 
 export const MatchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [gameInProgress, setGameInProgress] = useState(false);
-  const [showCountdown, setShowCountdown] = useState(false);
-  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [gameInProgress, setGameInProgress] = useState(defaultState.gameInProgress);
+  const [showCountdown, setShowCountdown] = useState(defaultState.showCountdown);
+  const [showMatchResultsModal, setShowMatchResultsModal] = useState(defaultState.showMatchResultsModal);
+  const [timer, setTimer] = useState(defaultState.timer); // Manage timer state
 
   const startGame = () => {
     setGameInProgress(true);
-    setShowCountdown(false);
+    setShowCountdown(true); // Assuming you want to show the countdown at the start
+    // Reset timer to default or initial value when game starts
+    setTimer(30); // Or whatever your game logic requires
   };
 
   const endGame = () => {
     setGameInProgress(false);
-    setShowResultsModal(true);
+    setShowMatchResultsModal(true);
   };
 
-  return (
-    <MatchContext.Provider value={{ gameInProgress, startGame, endGame, showCountdown, setShowCountdown, showResultsModal, setShowResultsModal }}>
-      {children}
-    </MatchContext.Provider>
-  );
+  const value = {
+    gameInProgress,
+    startGame,
+    endGame,
+    showCountdown,
+    setShowCountdown,
+    showMatchResultsModal,
+    setShowMatchResultsModal,
+    timer,
+    setTimer,
+  };
+
+  return <MatchContext.Provider value={value}>{children}</MatchContext.Provider>;
 };
 
 export const useMatch = () => {
